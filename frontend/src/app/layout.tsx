@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
-import LanguageSwitcher from "@/components/LanguageSwitcher";
 import { useLocaleStore } from "@/store/useLocaleStore";
 
 const geistSans = Geist({
@@ -18,7 +17,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Orbital Imagery Exploration Toolkit",
   description:
-    "SpaceApps prototype for browsing large imagery, AI search, and time-series overlays.",
+    "Orbital imagery workbench for NASA GIBS time-series datasets, annotations, and translation.",
 };
 
 export default function RootLayout({
@@ -29,12 +28,11 @@ export default function RootLayout({
   const locale = useLocaleStore.getState().locale;
 
   return (
-    <html lang={locale}>
+    <html lang={locale} className="dark">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} min-h-screen bg-[#0f0f10] text-[#ededed] antialiased`}
       >
         {children}
-        <LanguageSwitcher />
       </body>
     </html>
   );
