@@ -25,7 +25,7 @@ export function DatasetSidebar({ selectedId, onSelect, className, height }: Data
   }, [query]);
 
   const containerClasses = [
-    "flex w-full flex-col gap-4 rounded-2xl border border-slate-200 bg-white/90 p-4 text-slate-700 shadow-sm backdrop-blur dark:border-slate-800 dark:bg-slate-900/70 dark:text-slate-200",
+    "flex w-full flex-col gap-3 rounded-xl border border-[#262629] bg-[#141415] p-4 text-[#ededed]",
     height,
     className,
   ]
@@ -33,30 +33,23 @@ export function DatasetSidebar({ selectedId, onSelect, className, height }: Data
     .join(" ");
 
   return (
-    <section
-      className={containerClasses}
-      aria-label="Dataset selection"
-    >
-      <header className="space-y-1">
-        <h2 className="text-base font-semibold text-slate-900 dark:text-slate-100">Explore Datasets</h2>
-        <p className="text-xs text-slate-500 dark:text-slate-400">
-          Choose mission layers, deep sky mosaics, or planetary maps.
-        </p>
+    <section className={containerClasses} aria-label="Dataset selection">
+      <header className="flex items-baseline justify-between gap-2">
+        <h2 className="text-sm font-medium text-[#ededed]">Datasets</h2>
+        <span className="font-mono text-xs text-[#71717a] tabular-nums">{filtered.length} layers</span>
       </header>
 
-      <label className="flex min-h-[44px] items-center gap-3 rounded-xl border border-slate-200 bg-white/65 px-3 py-2 text-sm text-slate-700 shadow-inner focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-200 dark:border-slate-700 dark:bg-slate-900/60 dark:text-slate-200">
-        <span className="text-[11px] uppercase tracking-[0.2em] text-slate-400">Search</span>
-        <input
-          type="search"
-          placeholder="Search datasets..."
-          value={query}
-          onChange={(event) => setQuery(event.target.value)}
-          className="flex-1 border-none bg-transparent text-sm focus:outline-none"
-        />
-      </label>
+      <input
+        type="search"
+        aria-label="Search datasets"
+        placeholder="Filter datasets..."
+        value={query}
+        onChange={(event) => setQuery(event.target.value)}
+        className="h-9 w-full rounded-lg border border-[#262629] bg-[#0f0f10] px-3 text-xs text-[#ededed] placeholder-[#71717a] focus:border-[#38bdf8] focus:outline-none"
+      />
 
       <div className="scroll-elevated -mx-1 flex-1 overflow-y-auto px-1">
-        <ul className="space-y-3 pb-1">
+        <ul className="space-y-2 pb-1">
           {filtered.map((dataset) => {
             const active = dataset.id === selectedId;
             return (
@@ -64,22 +57,22 @@ export function DatasetSidebar({ selectedId, onSelect, className, height }: Data
                 <button
                   type="button"
                   onClick={() => onSelect(dataset.id)}
-                  className={`w-full rounded-2xl border px-4 py-3 text-left text-sm transition-colors ${
+                  className={`w-full rounded-lg border px-3 py-2.5 text-left transition-colors ${
                     active
-                      ? "border-blue-500 bg-blue-500/15 text-blue-100"
-                      : "border-slate-200 bg-white hover:border-blue-400/80 hover:bg-blue-50 dark:border-slate-800 dark:bg-slate-950 dark:hover:border-blue-400/60 dark:hover:bg-blue-500/15"
+                      ? "border-[#38bdf8]/45 bg-[#19191b] text-[#ededed]"
+                      : "border-[#262629] bg-[#0f0f10] text-[#ededed] hover:border-[#38383d] hover:bg-[#19191b]"
                   }`}
                 >
-                  <div className="flex items-center justify-between gap-3">
-                    <span className="font-semibold text-slate-900 dark:text-slate-100">{dataset.name}</span>
-                    <span className="rounded-full bg-slate-100 px-2 py-1 text-[10px] uppercase tracking-wide text-slate-600 dark:bg-slate-800 dark:text-slate-300">
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="text-xs font-medium text-[#ededed]">{dataset.name}</span>
+                    <span className="rounded bg-[#19191b] px-1.5 py-0.5 font-mono text-[10px] text-[#a1a1aa]">
                       {dataset.category}
                     </span>
                   </div>
-                  <p className="mt-2 text-xs leading-relaxed text-slate-500 dark:text-slate-400">
+                  <p className="mt-1 text-xs leading-relaxed text-[#a1a1aa]">
                     {dataset.description}
                   </p>
-                  <p className="mt-2 text-xs text-slate-400 dark:text-slate-500">{dataset.attribution}</p>
+                  <p className="mt-1 font-mono text-[10px] text-[#71717a]">{dataset.attribution}</p>
                 </button>
               </li>
             );
@@ -91,4 +84,3 @@ export function DatasetSidebar({ selectedId, onSelect, className, height }: Data
 }
 
 export default DatasetSidebar;
-

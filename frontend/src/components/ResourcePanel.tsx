@@ -1,44 +1,32 @@
-import TranslationWidget from "@/components/TranslationWidget";
 import useTranslations from "@/hooks/useTranslations";
 
 export function ResourcePanel() {
   const t = useTranslations("resourcePanel");
 
   return (
-    <section className="grid gap-4 rounded-2xl border border-dashed border-slate-300 bg-white/80 p-5 text-sm text-slate-600 shadow-inner dark:border-slate-700 dark:bg-slate-900/60 dark:text-slate-300">
-      <header className="flex items-center justify-between">
+    <section className="grid gap-3 rounded-xl border border-[#262629] bg-[#141415] p-4 text-xs text-[#a1a1aa]">
+      <header className="flex items-center justify-between gap-2">
         <div>
-          <h2 className="text-base font-semibold text-slate-900 dark:text-slate-100">
-            {t.title}
-          </h2>
-          <p className="text-xs text-slate-500 dark:text-slate-400">
-            {t.subtitle}
-          </p>
+          <h2 className="text-sm font-medium text-[#ededed]">{t.title}</h2>
+          <p className="text-xs text-[#a1a1aa]">{t.subtitle}</p>
         </div>
-        <span className="rounded-full bg-slate-200 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-slate-700 dark:bg-slate-800 dark:text-slate-300">
+        <span className="rounded-md border border-[#262629] bg-[#19191b] px-2 py-0.5 font-mono text-[11px] text-[#a1a1aa]">
           {t.statusChip}
         </span>
       </header>
 
       <ul className="grid gap-2">
         {t.items.map((item) => (
-          <li key={item.title} className="rounded-xl border border-slate-200 bg-white p-3 text-xs leading-5 text-slate-600 shadow-sm dark:border-slate-700 dark:bg-slate-950/60 dark:text-slate-300">
-            <strong className="font-semibold text-slate-900 dark:text-slate-100">
-              {item.title}
-            </strong>
-            <div>{item.description}</div>
+          <li key={item.title} className="rounded-lg border border-[#262629] bg-[#0f0f10] p-3 leading-relaxed">
+            <strong className="font-medium text-[#ededed]">{item.title}</strong>
+            <div className="mt-0.5 text-[#a1a1aa]">{item.description}</div>
           </li>
         ))}
       </ul>
 
-      <TranslationWidget />
-
-      <div className="rounded-xl border border-slate-300 border-dashed bg-white/40 p-3 text-xs text-slate-500 dark:border-slate-700 dark:bg-slate-900/40 dark:text-slate-400">
-        {t.footer}
-      </div>
+      <p className="border-t border-[#262629] pt-3 text-xs text-[#71717a]">{t.footer}</p>
     </section>
   );
 }
 
 export default ResourcePanel;
-
