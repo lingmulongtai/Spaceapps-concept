@@ -55,41 +55,37 @@ export function SearchPanel({
   };
 
   return (
-    <section className="grid gap-5 overflow-hidden rounded-2xl border border-slate-200 bg-white/85 p-6 shadow-lg shadow-slate-200/40 backdrop-blur dark:border-slate-800 dark:bg-slate-900/70 dark:shadow-slate-900/30">
-      <header className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-start sm:justify-between">
-        <div className="max-w-full">
-          <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100">
-            {t.title}
-          </h2>
-          <p className="text-sm text-slate-500 dark:text-slate-400">
-            {t.subtitle}
-          </p>
-        </div>
-        <div className="flex flex-wrap gap-2">
-          {t.modes.map((mode) => (
+    <section className="grid gap-4 rounded-xl border border-[#262629] bg-[#141415] p-4">
+      <header className="space-y-1">
+        <h2 className="text-sm font-medium text-[#ededed]">{t.title}</h2>
+        <p className="text-xs text-[#a1a1aa]">{t.subtitle}</p>
+      </header>
+
+      <div className="grid grid-cols-2 gap-1 rounded-lg border border-[#262629] bg-[#0f0f10] p-1">
+        {t.modes.map((mode) => {
+          const active = activeMode === mode.label;
+          return (
             <button
               key={mode.id}
               type="button"
-              className={`rounded-full px-3 py-1 text-sm font-medium transition-colors ${
-                activeMode === mode.label
-                  ? "bg-blue-600 text-white shadow"
-                  : "bg-slate-200 text-slate-700 hover:bg-slate-300 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700"
+              className={`rounded-md px-2.5 py-1.5 text-xs font-medium transition-colors ${
+                active
+                  ? "bg-[#19191b] text-[#ededed] border border-[#38bdf8]/40"
+                  : "border border-transparent text-[#a1a1aa] hover:text-[#ededed]"
               }`}
               onClick={() => setActiveMode(mode.label)}
             >
               {mode.label}
             </button>
-          ))}
-        </div>
-      </header>
+          );
+        })}
+      </div>
 
-      <div className="grid gap-4">
-        <label className="grid w-full min-w-0 gap-1 text-sm">
-          <span className="font-medium text-slate-600 dark:text-slate-300">
-            {t.primaryInputLabel}
-          </span>
+      <div className="grid gap-3">
+        <label className="grid gap-1.5 text-xs">
+          <span className="font-medium text-[#a1a1aa]">{t.primaryInputLabel}</span>
           <input
-            className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
+            className="h-9 w-full rounded-lg border border-[#262629] bg-[#0f0f10] px-3 text-xs text-[#ededed] placeholder-[#71717a] focus:border-[#38bdf8] focus:outline-none"
             placeholder={
               t.modes.find((mode) => mode.label === activeMode)?.placeholder ?? ""
             }
@@ -98,78 +94,63 @@ export function SearchPanel({
           />
         </label>
 
-        <label className="grid w-full min-w-0 gap-1 text-sm">
-          <span className="font-medium text-slate-600 dark:text-slate-300">
-            {t.dateRangeLabel}
-          </span>
-          <div className="grid gap-2 sm:grid-cols-2">
+        <div className="grid gap-1.5 text-xs">
+          <span className="font-medium text-[#a1a1aa]">{t.dateRangeLabel}</span>
+          <div className="grid grid-cols-2 gap-2">
             <input
               type="date"
-              className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 sm:max-w-[200px]"
+              className="h-9 w-full rounded-lg border border-[#262629] bg-[#0f0f10] px-2.5 font-mono text-xs text-[#ededed] tabular-nums focus:border-[#38bdf8] focus:outline-none"
               value={dateStart}
               onChange={(event) => setDateStart(event.target.value)}
             />
             <input
               type="date"
-              className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 sm:max-w-[200px]"
+              className="h-9 w-full rounded-lg border border-[#262629] bg-[#0f0f10] px-2.5 font-mono text-xs text-[#ededed] tabular-nums focus:border-[#38bdf8] focus:outline-none"
               value={dateEnd}
               onChange={(event) => setDateEnd(event.target.value)}
             />
           </div>
-        </label>
+        </div>
 
-        <label className="grid w-full min-w-0 gap-1 text-sm">
-          <span className="font-medium text-slate-600 dark:text-slate-300">
-            {t.layerLabel}
-          </span>
+        <label className="grid gap-1.5 text-xs">
+          <span className="font-medium text-[#a1a1aa]">{t.layerLabel}</span>
           <select
-            className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
+            className="h-9 w-full rounded-lg border border-[#262629] bg-[#0f0f10] px-2.5 text-xs text-[#ededed] focus:border-[#38bdf8] focus:outline-none"
             value={selectedLayer}
             onChange={(event) => setSelectedLayer(event.target.value)}
           >
             {LAYER_PRESETS.map((layer) => (
-              <option key={layer.value} value={layer.value}>
+              <option key={layer.value} value={layer.value} className="bg-[#141415]">
                 {t.layers[layer.key] ?? layer.value}
               </option>
             ))}
           </select>
         </label>
 
-        <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-          <div className="text-xs text-slate-500 dark:text-slate-400">
-            {t.helper}
-          </div>
+        <div className="flex items-center justify-between gap-3 pt-1">
+          <span className="text-[11px] text-[#71717a]">{t.helper}</span>
           <button
             type="button"
-            className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow transition-colors hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200 disabled:cursor-wait disabled:bg-blue-400"
+            className="inline-flex h-9 shrink-0 items-center gap-2 rounded-lg bg-[#ededed] px-3.5 text-xs font-medium text-[#0f0f10] transition-colors hover:bg-white disabled:cursor-wait disabled:opacity-50"
             onClick={handlePreview}
             disabled={isLoading}
           >
             {isLoading ? t.previewLoading : t.previewButton}
           </button>
         </div>
+
         {error && (
-          <p className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-xs text-red-700 dark:border-red-900/50 dark:bg-red-900/30 dark:text-red-200">
-            {error}
+          <p className="rounded-lg border border-[#38383d] bg-[#19191b] px-3 py-2 text-xs text-[#a1a1aa]">
+            Backend preview proxy unavailable — live NASA GIBS tiles remain active.
           </p>
         )}
 
         {preview && (
-          <div className="grid gap-1 rounded-xl border border-slate-200 bg-white/70 p-3 text-xs text-slate-600 shadow-sm dark:border-slate-800 dark:bg-slate-900/60 dark:text-slate-300">
-            <span>
-              {t.summary.layer}: {preview.layer}
-            </span>
-            <span>
-              {t.summary.time}: {preview.time}
-            </span>
-            <span>
-              {t.summary.bbox}: {preview.bbox.join(", ")}
-            </span>
-            {preview.source && (
-              <span>
-                {t.summary.source}: {preview.source}
-              </span>
-            )}
+          <div className="grid gap-1 rounded-lg border border-[#262629] bg-[#0f0f10] p-3 font-mono text-[11px] text-[#a1a1aa] tabular-nums">
+            <span>{t.summary.layer}: {preview.layer}</span>
+            <span>{t.summary.time}: {preview.time}</span>
+            <span>{t.summary.bbox}: {preview.bbox.join(", ")}</span>
+            {preview.source && <span>{t.summary.source}: {preview.source}</span>}
           </div>
         )}
       </div>
@@ -178,4 +159,3 @@ export function SearchPanel({
 }
 
 export default SearchPanel;
-

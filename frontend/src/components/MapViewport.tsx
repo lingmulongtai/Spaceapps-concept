@@ -60,6 +60,10 @@ export function MapViewport({
   const prevDateRef = useRef<string | undefined>(externalSelectedDate ?? DATASET_LOOKUP.get(datasetId)?.defaultDate);
   const hasInitialisedRef = useRef(false);
 
+  useEffect(() => {
+    setSelectedDatasetId(datasetId);
+  }, [datasetId]);
+
   const dataset = useMemo(() => DATASET_LOOKUP.get(selectedDatasetId), [selectedDatasetId]);
 
   // initialise map once
@@ -283,7 +287,7 @@ export function MapViewport({
 
   const defaultHeightClasses = className ? "" : "h-[520px] md:h-[580px] lg:h-[640px]";
   const containerClasses = [
-    "relative flex flex-1 flex-col overflow-hidden rounded-3xl border border-slate-900/30 bg-slate-950 text-slate-100 shadow-xl shadow-slate-900/40",
+    "relative flex flex-1 flex-col overflow-hidden rounded-xl border border-[#262629] bg-[#090a0c] text-[#ededed]",
     defaultHeightClasses,
     className,
   ]
@@ -292,17 +296,17 @@ export function MapViewport({
 
   return (
     <section className={containerClasses}>
-      <div className="relative z-20 flex flex-wrap items-center justify-between gap-3 border-b border-white/10 bg-slate-950/85 px-4 py-3 text-xs backdrop-blur">
-        <div className="flex flex-wrap items-center gap-4">
+      <div className="relative z-20 flex flex-wrap items-center justify-between gap-3 border-b border-[#262629] bg-[#141415] px-4 py-2.5 text-xs">
+        <div className="flex flex-wrap items-center gap-3">
           <label className="flex items-center gap-2">
-            <span className="text-[10px] uppercase tracking-[0.24em] text-slate-400">Dataset</span>
+            <span className="text-xs font-medium text-[#a1a1aa]">Dataset</span>
             <select
-              className="rounded-lg border border-white/20 bg-slate-900 px-2 py-1.5 text-xs text-slate-100 shadow-sm outline-none transition focus:border-blue-400 focus:ring-2 focus:ring-blue-500/40"
+              className="h-8 rounded-lg border border-[#262629] bg-[#0f0f10] px-2.5 text-xs text-[#ededed] outline-none transition-colors focus:border-[#38bdf8]"
               value={selectedDatasetId}
               onChange={handleDatasetSelect}
             >
               {DATASETS.map((item) => (
-                <option key={item.id} value={item.id}>
+                <option key={item.id} value={item.id} className="bg-[#141415]">
                   {item.name}
                 </option>
               ))}
@@ -310,34 +314,34 @@ export function MapViewport({
           </label>
           {(dataset?.supportsTime || availableDates) && (
             <label className="flex items-center gap-2">
-              <span className="text-[10px] uppercase tracking-[0.24em] text-slate-400">Date</span>
-          <select
-            className="rounded-lg border border-white/20 bg-slate-900 px-2 py-1.5 text-xs text-slate-100 shadow-sm outline-none transition focus:border-blue-400 focus:ring-2 focus:ring-blue-500/40"
-            value={selectedDate ?? ""}
-            onChange={handleDateChange}
-          >
-            <option value="">Latest available</option>
-            {(availableDates ?? dataset?.availableDates ?? []).map((date) => (
-              <option key={date} value={date}>
-                {date}
-              </option>
-            ))}
-          </select>
+              <span className="text-xs font-medium text-[#a1a1aa]">Date</span>
+              <select
+                className="h-8 rounded-lg border border-[#262629] bg-[#0f0f10] px-2.5 font-mono text-xs text-[#ededed] tabular-nums outline-none transition-colors focus:border-[#38bdf8]"
+                value={selectedDate ?? ""}
+                onChange={handleDateChange}
+              >
+                <option value="" className="bg-[#141415]">Latest available</option>
+                {(availableDates ?? dataset?.availableDates ?? []).map((date) => (
+                  <option key={date} value={date} className="bg-[#141415]">
+                    {date}
+                  </option>
+                ))}
+              </select>
             </label>
           )}
         </div>
         {dataset?.overlays && dataset.overlays.length > 0 && (
-          <div className="flex flex-wrap items-center gap-2 text-[11px] text-slate-300">
-            <span className="text-[10px] uppercase tracking-[0.24em] text-slate-400">Overlays</span>
+          <div className="flex flex-wrap items-center gap-2 text-xs text-[#a1a1aa]">
+            <span className="font-medium">Overlays</span>
             {dataset.overlays.map((overlay) => (
-              <label key={overlay.id} className="flex items-center gap-1 rounded-lg border border-white/10 bg-white/5 px-2 py-1 backdrop-blur">
+              <label key={overlay.id} className="flex items-center gap-1.5 rounded-md border border-[#262629] bg-[#0f0f10] px-2 py-1 text-[#ededed]">
                 <input
                   type="checkbox"
-                  className="h-3.5 w-3.5 rounded border-white/30 bg-slate-900 text-blue-500 focus:ring-blue-400"
+                  className="h-3.5 w-3.5 accent-[#38bdf8]"
                   checked={overlaySelection[overlay.id] ?? true}
                   onChange={() => handleOverlayToggle(overlay.id)}
                 />
-                <span className="text-[11px]">{overlay.name}</span>
+                <span>{overlay.name}</span>
               </label>
             ))}
           </div>
@@ -353,29 +357,26 @@ export function MapViewport({
             </picture>
           </div>
         )}
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 bg-gradient-to-t from-slate-950/90 via-slate-950/10 to-transparent px-5 pb-4 pt-8">
-          <div className="pointer-events-auto flex flex-col gap-2 rounded-2xl border border-white/15 bg-white/5 p-4 text-[12px] text-slate-200 backdrop-blur">
-            <div className="flex items-start gap-3">
-              <div>
-                <p className="text-[10px] uppercase tracking-[0.4em] text-slate-400">{t.badge}</p>
-                <h2 className="text-lg font-semibold">{dataset?.name ?? t.headingFallback}</h2>
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 p-3 sm:p-4">
+          <div className="pointer-events-auto flex flex-col gap-2 rounded-lg border border-white/10 bg-[#0f0f10]/88 p-3.5 text-xs text-[#ededed] backdrop-blur-md">
+            <div className="flex flex-wrap items-baseline justify-between gap-2">
+              <div className="flex items-baseline gap-2">
+                <h2 className="text-sm font-medium text-[#ededed]">{dataset?.name ?? t.headingFallback}</h2>
+                <span className="font-mono text-[11px] text-[#38bdf8]">{t.badge}</span>
               </div>
               {attribution || dataset?.attribution ? (
-                <span className="ml-auto rounded-full border border-white/10 bg-slate-900/80 px-3 py-1 text-[9px] uppercase tracking-[0.28em] text-slate-300">
+                <span className="font-mono text-[11px] text-[#a1a1aa]">
                   {attribution ?? dataset?.attribution}
                 </span>
               ) : null}
             </div>
-            <ul className="space-y-1 text-slate-300">
+            <ul className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-[#a1a1aa]">
               {infoItems.map((item) => (
-                <li key={item} className="flex items-start gap-3">
-                  <span className="mt-1 inline-flex h-2 w-2 flex-shrink-0 rounded-full bg-blue-400" />
+                <li key={item} className="flex items-center gap-2">
+                  <span className="inline-block h-1.5 w-1.5 rounded-full bg-[#38bdf8]" />
                   <span>{item}</span>
                 </li>
               ))}
-              {dataset?.description && !metadata && (
-                <li className="text-[11px] text-slate-400">{dataset.description}</li>
-              )}
             </ul>
           </div>
         </div>
